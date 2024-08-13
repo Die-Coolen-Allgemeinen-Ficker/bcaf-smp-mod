@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "bcafsmpmod",
+	"version": "${version}",
+	"name": "bcafsmpmod",
+	"description": "Mod managing the BCAF SMP.",
+	"authors": [
+		"BCAF",
+		"Marie"
+	],
+	"contact": {
+		"homepage": "https://die-coolen-allgemeinen-ficker.github.io/",
+		"sources": "https://github.com/Die-Coolen-Allgemeinen-Ficker/bcaf-smp-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/bcafsmpmod/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"bcaf.bcafsmpmod.Bcafsmpmod"
+		]
+	},
+	"mixins": [
+		"bcafsmpmod.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
