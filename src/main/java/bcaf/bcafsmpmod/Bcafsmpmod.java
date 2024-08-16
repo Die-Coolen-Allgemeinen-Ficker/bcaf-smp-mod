@@ -9,24 +9,26 @@ import net.minecraft.text.Text;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
+
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import com.mongodb.ConnectionString;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoClients;
+import com.mongodb.reactivestreams.client.MongoDatabase;
+
+import bcaf.bcafsmpmod.database.codec.Smp;
 
 public class Bcafsmpmod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("bcafsmpmod");
-	public static BcafsmpmodConfig config = BcafsmpmodConfig.load();
-	private static MongoClient mongoClient = MongoClients.create(config.mongodbConnectionString);
-	public static MongoDatabase bcafDb = mongoClient.getDatabase("bcaf-user-data");
-	private static CodecProvider codecProvider = PojoCodecProvider.builder().register("bcaf.bcafsmpmod.database.codec").build();
-	public static CodecRegistry codecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(codecProvider));
+	public static final BcafsmpmodConfig CONFIG = BcafsmpmodConfig.load();
+	private static final MongoClient MONGO_CLIENT = MongoClients.create(CONFIG.mongodbConnectionString);
+	public static final MongoDatabase BCAFDB = MONGO_CLIENT.getDatabase("bcaf-user-data");
+	private static final CodecProvider CODEC_PROVIDER = PojoCodecProvider.builder().register("bcaf.bcafsmpmod.database.codec").build();
+	public static final CodecRegistry CODEC_REGISTRY = fromRegistries(getDefaultCodecRegistry(), fromProviders(CODEC_PROVIDER));
 
 	@Override
 	public void onInitialize() {
@@ -43,5 +45,8 @@ public class Bcafsmpmod implements ModInitializer {
 		ServerMessageEvents.GAME_MESSAGE.register((MinecraftServer server, Text text, boolean bool) -> {
 			ChatLink.sendMessage(text.getString());
 		});
+
+		// Server config
+		Smp.configureWhitelist();
 	}
 }

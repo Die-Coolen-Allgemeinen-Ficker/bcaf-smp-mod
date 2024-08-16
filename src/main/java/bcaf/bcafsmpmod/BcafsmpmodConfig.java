@@ -18,12 +18,13 @@ import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class BcafsmpmodConfig {
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     // Config values
     public String serverId = UUID.randomUUID().toString();
     public String mongodbConnectionString = "";
     public String chatLinkWebhookUrl = "";
+    public String[] whitelistUuids = {};
 
     public static BcafsmpmodConfig load () {
         try {
@@ -32,7 +33,7 @@ public class BcafsmpmodConfig {
 
             if (configFile.exists()) {
                 String json = IOUtils.toString(new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8));
-                config = gson.fromJson(json, BcafsmpmodConfig.class);
+                config = GSON.fromJson(json, BcafsmpmodConfig.class);
             } else
                 config = new BcafsmpmodConfig();
 
@@ -49,7 +50,7 @@ public class BcafsmpmodConfig {
         File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "bcaf.json");
         try {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8));
-            writer.write(gson.toJson(config));
+            writer.write(GSON.toJson(config));
             writer.close();
         } catch (Exception exception) {
             Bcafsmpmod.LOGGER.error("Couldn't save config to \"bcaf.json\".");

@@ -39,7 +39,10 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	
-	implementation 'org.mongodb:mongodb-driver-sync:5.1.2'
+	implementation 'org.mongodb:mongodb-driver-reactivestreams:5.1.2'
+
+	implementation platform('io.projectreactor:reactor-bom:2023.0.8')
+	implementation 'io.projectreactor:reactor-core'
 }
 
 processResources {
@@ -73,8 +76,10 @@ jar {
 shadowJar {
 	dependencies {
 		include {
-			it.moduleGroup == 'com.mongodb'
-			it.moduleGroup == 'org.mongodb'
+			it.moduleGroup == 'com.mongodb' ||
+			it.moduleGroup == 'org.mongodb' ||
+			it.moduleGroup == 'org.reactivestreams' ||
+			it.moduleGroup == 'io.projectreactor'
 		}
 	}
 }
